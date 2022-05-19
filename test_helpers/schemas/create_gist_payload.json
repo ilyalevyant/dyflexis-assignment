@@ -1,0 +1,9 @@
+{
+  "description": "test gist",
+  "files": {
+    "some_test_file": {
+      "content": "some test content"
+    }
+  },
+  "public": true
+}

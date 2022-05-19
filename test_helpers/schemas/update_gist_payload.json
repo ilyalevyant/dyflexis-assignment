@@ -1,0 +1,8 @@
+{
+  "description": "update test gist",
+  "files": {
+    "update_file_name": {
+      "content": "updated content"
+    }
+  }
+}
