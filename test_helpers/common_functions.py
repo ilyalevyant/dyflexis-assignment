@@ -62,6 +62,5 @@ def gists_test_helper_non_authorized(non_authorized_headers, gists_conf):
 def load_json_schema(filename: object) -> object:
     """ Loads the given schemas file """
     absolute_path = join(dirname(__file__), filename)
-
     with open(absolute_path) as schema_file:
         return json.loads(schema_file.read())

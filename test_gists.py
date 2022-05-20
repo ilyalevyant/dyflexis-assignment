@@ -12,14 +12,15 @@ def test_create_gist(gists_test_helper, gists_data_factory):
     r = gists_test_helper.create_gist(payload)
     assert r.status_code == 201, f"Status code for create gist is not as expected. Actual status code is {r.status_code}"
     expected_result = gists_data_factory.create_gist_expected_result()
-    create_gist_response = r.json()
+    create_gist_response = gists_data_factory.create_gist_response(r.json())
     actual_result = gists_data_factory.actual_result_create_gist(r.json())
     assert actual_result == expected_result, f"Response body is not as expected for create gist. Actual response is {create_gist_response}"
 
     gist_id = r.json()['id']
     r = gists_test_helper.get_gist_by_id(gist_id)
     assert r.status_code == 200, f'Status code for get gist by id is not as expected. Actual status code is {r.status_code}'
-    assert r.json() == create_gist_response, 'Response for get gist is not equals to response for create gist'
+    get_gist_response = gists_data_factory.create_gist_response(r.json())
+    assert get_gist_response == create_gist_response, 'Response for get gist is not equals to response for create gist'
 
 
 @pytest.mark.parametrize('params', [('description', None), ('public', False)])
@@ -31,26 +32,21 @@ def test_create_gist_mandatory_fields_only(gists_test_helper, gists_data_factory
     4. Validate with get API that gist was saved in DB as expected.
     5. Validate default value for non-mandatory field.
     """
-    field, default_value = params
-    payload = gists_data_factory.create_gist_payload()
-    del(payload[field])
+    field, _ = params
+    payload = gists_data_factory.create_gist_payload(field_to_remove=field)
 
     r = gists_test_helper.create_gist(payload)
     assert r.status_code == 201, f"Status code for create gist without {field} is wrong. Actual status code is {r.status_code}"
-    expected_result = gists_data_factory.create_gist_expected_result(non_mandatory_filed=params)
-    create_gist_response = r.json()
-    assert create_gist_response['updated_at']
-    del(create_gist_response['updated_at'])
+    expected_result_create_gist = gists_data_factory.create_gist_expected_result(non_mandatory_filed=params)
+    actual_result_create_gist = gists_data_factory.actual_result_create_gist(r.json())
+    assert actual_result_create_gist == expected_result_create_gist, \
+        f"Response body is not as expected for create gist. Actual response is {r.json()}"
 
-    actual_result = gists_data_factory.actual_result_create_gist(r.json())
-    assert actual_result == expected_result, f"Response body is not as expected for create gist. Actual response is {create_gist_response}"
-    gist_id = r.json()['id']
-    r = gists_test_helper.get_gist_by_id(gist_id)
+    create_gist_response = gists_data_factory.create_gist_response(r.json())
+    r = gists_test_helper.get_gist_by_id(r.json()['id'])
     assert r.status_code == 200, f'Status code for get gist by id is not as expected. Actual status code is {r.status_code}'
-    actual_result = r.json()
-    assert actual_result['updated_at']
-    del(actual_result['updated_at'])
-    assert actual_result == create_gist_response, 'Response for get gist is not equals to response for create gist'
+    get_gist_response = gists_data_factory.create_gist_response(r.json())
+    assert get_gist_response == create_gist_response, 'Response for get gist is not equals to response for create gist'
 
 
 def test_create_gist_no_token_negative(gists_test_helper_non_authorized, gists_data_factory):
@@ -178,6 +174,7 @@ def test_get_gists_by_user_per_page_parameter(gists_test_helper_non_authorized):
     assert len(result) == 40, "Number of gists doesn't equals to `per_page` parameter."
 
 
+@pytest.mark.serial
 def test_get_gists_by_user_page_parameter(gists_test_helper_non_authorized):
     """
     1. Get 2 gists on one page.
@@ -201,3 +198,4 @@ def test_get_gists_by_user_with_invalid_date_negative(gists_test_helper_non_auth
     r = gists_test_helper_non_authorized.get_gists_by_user(user=gists_test_helper_non_authorized.git_hub_user, query_params='since=2100-01-01T00:00:00Z&per_page=40&page=1')
     assert r.status_code == 200, f'Status code for get gists by user is not as expected. Actual status code is {r.status_code}'
     assert not r.json()
+
