@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from services_api import ServicesApi
-from config import Config
+from test_helpers.services_api import ServicesApi
+from test_helpers.config import Config
 
 
 @dataclass

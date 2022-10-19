@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from shorterner_service_api import ShorternerServiceApi
+from test_helpers.shorterner_service_api import ShorternerServiceApi
 
 
 @dataclass

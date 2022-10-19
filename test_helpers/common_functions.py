@@ -43,7 +43,7 @@ def created_shortcode_with_specific_code(shorterner_service, rnd_url, rnd_shortc
 
 @pytest.fixture
 def shorterner_conf():
-    from config import Config
+    from test_helpers.config import Config
     config = Config()
     return config
 
