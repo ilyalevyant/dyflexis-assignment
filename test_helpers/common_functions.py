@@ -27,8 +27,7 @@ def created_shortcode(shorterner_service, rnd_url, shorterner_data_factory):
     payload = shorterner_data_factory.create_shorterner_payload(rnd_url)
     r = shorterner_service.create_shortcode(payload)
     assert r.status_code == HTTPStatus.CREATED, f"status code for create shorterner is {r.status_code}"
-    assert r.json()[
-        "shortcode"], f"shortcode value is expected in response for create shorterner. Actual resoinse is {r.json()}"
+    assert len(r.json()["shortcode"]) == 6, f"shortcode value is not as expected in response for create shorterner. Actual resoinse is {r.json()}"
     return r.json()["shortcode"]
 
 
