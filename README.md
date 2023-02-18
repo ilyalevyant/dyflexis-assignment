@@ -39,7 +39,7 @@ To execute test:
 Bug reproduces only for new records. For old records bug is not reproduces.
 2. Some status codes in responses logically not matches to event.
 For example, for 'Create booking without any of mandatory filed' expected error code should be 400 (Bad request) and not 500.
-  
+3. No calendar logic validation on server side. Booking with checkout date early then checkin date can be created without any error.
 ```
 
 
