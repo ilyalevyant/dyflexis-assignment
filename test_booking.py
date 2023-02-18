@@ -154,3 +154,4 @@ def test_partial_update_booking_no_token(booking_service, booking_data_factory, 
     updated_payload = booking_data_factory.update_booking_payload()
     r = booking_service.partial_update_booking(booking_id, updated_payload)
     assert r.status_code == HTTPStatus.FORBIDDEN, 'Status code is not as expected for "delete booking" request without token'
+
