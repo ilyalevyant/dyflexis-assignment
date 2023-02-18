@@ -1,0 +1,11 @@
+{
+  "firstname": "Updated",
+  "lastname": "Updated",
+  "totalprice": 777,
+  "depositpaid": false,
+  "bookingdates": {
+    "checkin": "2011-01-01",
+    "checkout": "2012-01-01"
+  },
+  "additionalneeds": "Updated"
+}

@@ -15,6 +15,10 @@ class ServicesApi:
         r = requests.post(endpoint, headers=self.__headers, json=payload)
         return r
 
+    def put(self, endpoint, payload=None):
+        r = requests.put(endpoint, headers=self.__headers, json=payload)
+        return r
+
     def delete(self, endpoint):
         r = requests.delete(endpoint, headers=self.__headers)
         return r
