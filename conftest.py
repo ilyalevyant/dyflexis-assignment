@@ -3,7 +3,9 @@ from http import HTTPStatus
 import pytest
 import requests
 
+from pages.start_page import StartPage
 from test_helpers.config import Config
+from test_helpers.driver_factory import DriverFactory
 
 
 def pytest_addoption(parser):
@@ -54,4 +56,15 @@ def booking_service(headers, booking_conf):
     return BookingService(headers, booking_conf)
 
 
+@pytest.fixture
+def browser(booking_conf):
+    driver_factory = DriverFactory(booking_conf)
+    driver = driver_factory.get_driver()
+    yield driver
+    driver.quit()
 
+
+@pytest.fixture
+def start_page(browser, booking_conf):
+    browser.get(booking_conf.start_page)
+    return StartPage(browser)

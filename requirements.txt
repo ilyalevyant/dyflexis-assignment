@@ -1,3 +1,6 @@
 pytest
 requests
 dataclasses
+selenium-wire
+page_objects
+webdriver-manager
