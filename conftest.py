@@ -20,7 +20,7 @@ def headers():
     }
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def auth_headers(pytestconfig):
     r = requests.post(Config.auth_endpoint, json={"username": pytestconfig.getoption("username"), "password": pytestconfig.getoption("password")})
     assert r.status_code == HTTPStatus.OK, f'Token was not created successfully. {r.text}'
